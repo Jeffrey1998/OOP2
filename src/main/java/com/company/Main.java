@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.controllers.AvaiableAnimalsController;
+import com.company.exceptions.incorrectFilenameException;
 import com.company.food.Dogfood;
 import com.company.species.*;
 import io.javalin.Javalin;
@@ -9,6 +10,8 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import com.company.exceptions.FileNotFoundException;
+import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -61,10 +64,10 @@ public class Main {
             System.out.println(item);
         }
 
-        app.get("/", AvaiableAnimalsController::getAvailableAnimals);
+//        app.get("/", AvaiableAnimalsController::getAvailableAnimals);
 
 //        create file
-//        File file = new File("available.txt");
+
 //        FileWriter fw = new FileWriter(file);
 //        PrintWriter pw = new PrintWriter(fw);
 //
@@ -72,6 +75,10 @@ public class Main {
 //            pw.append(AvaiableAnimalsController::getAvailableAnimals);
 //        }
 //        pw.close();
+        File file = new File("available.txt");
+        app.post("/", ctx -> {
+
+        });
 
         app.get("/", ctx -> {
             // stream, streamReader en buffer om file uit te lezen
@@ -80,7 +87,16 @@ public class Main {
             BufferedReader reader = new BufferedReader(isr);
 
             // geef alle regels van de file terug
-            ctx.result(reader.lines().collect(Collectors.joining()) + "\n");
+            try {
+                if (file.exists()) {
+                    ctx.result(reader.lines().collect(Collectors.joining()) + "\n");
+                } else {
+                    throw new incorrectFilenameException("incorrect filename");
+                }
+            }catch (RuntimeException err){
+                System.out.println("something went wrong");
+                throw err;
+            }
         });
     }
 }
