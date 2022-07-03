@@ -17,12 +17,14 @@ public class Animal {
         this.sound = sound;
     }
 
-    public void makeSound() {
-        System.out.println(this.sound + "");
+    public String makeSound() {
+//        System.out.println(this.sound + "");
+        return this.sound;
     }
 
-    public void getName() {
-        System.out.println(this.name + "");
+    public String getName() {
+//        System.out.println(this.name + "");
+        return this.name;
     }
 
     public void setName(String name) {

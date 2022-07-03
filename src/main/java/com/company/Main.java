@@ -1,6 +1,5 @@
 package com.company;
 
-import com.company.controllers.AvaiableAnimalsController;
 import com.company.exceptions.incorrectFilenameException;
 import com.company.food.Dogfood;
 import com.company.species.*;
@@ -8,10 +7,14 @@ import io.javalin.Javalin;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import com.company.exceptions.FileNotFoundException;
-import java.util.stream.Stream;
+
+import static java.lang.Boolean.parseBoolean;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -26,31 +29,33 @@ public class Main {
         Frog frog = new Frog();
         Eagle eagle = new Eagle("Birdy");
 
-        Animal[] animals = new Animal[] {
-                dog, cat, turtle, frog, eagle, dog2
-        };
+        List<Animal> animals = new ArrayList<>();
+        animals.add(new Dog("Lucky"));
+        animals.add(new Dog("Senna"));
+        animals.add(new Cat("Kitty"));
+        animals.add(new Turtle());
+        animals.add(new Frog());
+        animals.add(new Eagle("Birdy"));
 
         Dog[] dogs = new Dog[] {
                 dog, dog2
         };
-
 
         ArrayList inventory = new ArrayList<isSellable>();
         inventory.add(new Dogfood());
 
         System.out.println("All classes in the list");
 
-        for (Animal animal: animals ){
-            animal.makeSound();
+        Predicate<Animal> animalHasName = animal -> !parseBoolean(animal.getName());
 
-            // instanceOf declaration
-            if (animal instanceof isSellable) {
-                // cast
-                // as soon as an animal in the array of animals has the declaration of isSellable it gets added to
-                // inventory
-                inventory.add((isSellable)animal);
-            }
-        }
+//      Refactored to stream
+//      Returns all animals that make a sound, that's found in the list
+        List<Animal> animalsThatMakeSound = animals.stream()
+                .filter(animal -> animal.makeSound() != null)
+                .filter(animalHasName)
+                .collect(Collectors.toList());
+
+        animalsThatMakeSound.forEach(animal -> System.out.println(animal.makeSound()));
 
         // Dogs have the same property as cats
         System.out.println("\nAll dogs have a name: ");
@@ -64,36 +69,24 @@ public class Main {
             System.out.println(item);
         }
 
-//        app.get("/", AvaiableAnimalsController::getAvailableAnimals);
-
-//        create file
-
-//        FileWriter fw = new FileWriter(file);
-//        PrintWriter pw = new PrintWriter(fw);
-//
-//        for(int i = 0; i<10; i++) {
-//            pw.append(AvaiableAnimalsController::getAvailableAnimals);
-//        }
-//        pw.close();
         File file = new File("available.txt");
         app.post("/", ctx -> {
 
         });
 
         app.get("/", ctx -> {
-            // stream, streamReader en buffer om file uit te lezen
-            FileInputStream fis = new FileInputStream("available.txt");
-            InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
-            BufferedReader reader = new BufferedReader(isr);
-
-            // geef alle regels van de file terug
             try {
+                // stream, streamReader en buffer om file uit te lezen
+                FileInputStream fis = new FileInputStream("available.txt");
+                InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+                BufferedReader reader = new BufferedReader(isr);
+
                 if (file.exists()) {
                     ctx.result(reader.lines().collect(Collectors.joining()) + "\n");
                 } else {
                     throw new incorrectFilenameException("incorrect filename");
                 }
-            }catch (RuntimeException err){
+            }catch (incorrectFilenameException err){
                 System.out.println("something went wrong");
                 throw err;
             }
