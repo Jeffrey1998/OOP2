@@ -1,6 +1,6 @@
 !!! BELANGRIJK: Gitlab is voor mij bugged dus heb mijn project op mijn eigen github gepushed. Ik moet namelijk gaan rebasen en voor dat ben ik mijn code kwijt.
 Excuus voor het ongemak..
-link: https://github.com/Jeffrey1998/HVA-OOP-animals/tree/master/out/production/Animal-OOP-eindopdracht/com/company
+link: https://github.com/Jeffrey1998/OOP2.git
 
 Voornaam: Jeffrey
 
@@ -418,4 +418,4 @@ public void testThrowsFileNotFoundException() {
 }
 ```
 
-Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-jou)
+Link github-page: https://github.com/Jeffrey1998/OOP2.git
