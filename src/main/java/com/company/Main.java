@@ -111,7 +111,7 @@ public class Main {
                     throw new incorrectFilenameException("incorrect filename");
                 }
             }catch (incorrectFilenameException err){
-                System.out.println("something went wrong");
+                System.out.println("incorrect filename");
                 throw err;
             }
         });

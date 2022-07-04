@@ -287,7 +287,7 @@ Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-j
 1. GET request waarbij er data uit een tekstbestand wordt gelezen en terug gestuurd.
 2. POST request waarbij er data wordt weggeschreven naar een tekstbestand.
 ```java
-Vond deze 2 eerlijk gezegd niet bepaald duidelijk... maar ik denk dat dit zo de bedoeling was?
+Vond deze 2 eerlijk gezegd niet bepaald duidelijk... maar ik denk dat dit de bedoeling was?
 GET REQUEST:
         app.get("/", ctx -> {
         try {
@@ -382,7 +382,7 @@ Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-j
 ##### 6. Minimaal 1 `intermediate operation` op een stream
 
 ```java
-    Contains both, itermediate and terminal operation
+    Contains both, itermediate and terminal operation -> filter
         List<Animal> animalsThatMakeSound = animals.stream()
         .filter(animal -> animal.makeSound() != null)
         .filter(animalHasName)
@@ -394,7 +394,7 @@ Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-j
 ##### 7. Minimaal 1 `terminal operation` op een stream
 
 ```java
-    Contains both, itermediate and terminal operation
+    Contains both, itermediate and terminal operation -> collect
         List<Animal> animalsThatMakeSound = animals.stream()
         .filter(animal -> animal.makeSound() != null)
         .filter(animalHasName)
@@ -406,7 +406,16 @@ Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-j
 ##### 8. Unit tests met minimaal 60% code coverage (getters en setters tellen niet mee)
 
 ```java
-Plaats hier je code snippets
+--> Heb veel niet mee kunnen nemen i.v.m. gebrek aan tijd :(
+Exception testing
+@Rule
+public ExpectedException thrown = ExpectedException.none();
+
+@Test
+public void testThrowsFileNotFoundException() {
+        thrown.expect(fileNotFoundException.class);
+        thrown.expectMessage("something went wrong");
+}
 ```
 
 Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-jou)
