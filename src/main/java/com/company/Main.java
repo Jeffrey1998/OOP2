@@ -44,8 +44,7 @@ public class Main {
         ArrayList inventory = new ArrayList<isSellable>();
         inventory.add(new Dogfood());
 
-        System.out.println("All classes in the list");
-
+        System.out.println("All animals with name");
         Predicate<Animal> animalHasName = animal -> !parseBoolean(animal.getName());
 
 //      Refactored to stream
@@ -56,6 +55,11 @@ public class Main {
                 .collect(Collectors.toList());
 
         animalsThatMakeSound.forEach(animal -> System.out.println(animal.makeSound()));
+
+        System.out.print("Print all animals using consumer");
+//      Consumer that prints out all the animals
+        Consumer<Animal> c = System.out::println;
+        animals.forEach(c);
 
         // Dogs have the same property as cats
         System.out.println("\nAll dogs have a name: ");
@@ -70,8 +74,12 @@ public class Main {
         }
 
         File file = new File("available.txt");
-        app.post("/", ctx -> {
+        app.post("/upload", ctx -> {
+            try {
 
+            } catch (Exception e) {
+
+            }
         });
 
         app.get("/", ctx -> {
