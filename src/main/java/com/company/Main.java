@@ -1,10 +1,12 @@
 package com.company;
 
+import com.company.exceptions.JsonParseException;
 import com.company.exceptions.incorrectFilenameException;
 import com.company.food.Dogfood;
 import com.company.species.*;
 import io.javalin.Javalin;
 
+import javax.naming.Context;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.logging.Handler;
 import java.util.stream.Collectors;
 
 import static java.lang.Boolean.parseBoolean;
@@ -79,6 +82,19 @@ public class Main {
 
             } catch (Exception e) {
 
+            }
+        });
+
+        app.post("/newAnimal", ctx -> {
+            String animalName = ctx.body();
+            ctx.result(animalName);
+
+            try {
+                PrintWriter writer = new PrintWriter(file, "UTF-8");
+                writer.println(animalName);
+                writer.close();
+            } catch(JsonParseException e) {
+                e.printStackTrace();
             }
         });
 

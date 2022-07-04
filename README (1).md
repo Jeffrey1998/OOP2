@@ -260,8 +260,24 @@ N.V.T.
 Naast de OOP1 voorwaarden dient je OOP2 programma aan de volgende voorwaarden te voldoen:
 
 ##### 1. Gebruikt en implementeert minimaal 2 functionele interfaces uit de package `java.util.function`
-```java
-Plaats hier je code snippets
+```java 
+        this piece of code contains 2 functional interfaces including: Predicate and Consumer
+        
+        Predicate<Animal> animalHasName = animal -> !parseBoolean(animal.getName());
+
+//      Refactored to stream
+//      Returns all animals that make a sound, that's found in the list
+        List<Animal> animalsThatMakeSound = animals.stream()
+        .filter(animal -> animal.makeSound() != null)
+        .filter(animalHasName)
+        .collect(Collectors.toList());
+
+        animalsThatMakeSound.forEach(animal -> System.out.println(animal.makeSound()));
+
+        System.out.print("Print all animals using consumer");
+//      Consumer that prints out all the animals
+        Consumer<Animal> c = System.out::println;
+        animals.forEach(c);
 ```
 
 Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-jou)
@@ -271,13 +287,43 @@ Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-j
 1. GET request waarbij er data uit een tekstbestand wordt gelezen en terug gestuurd.
 2. POST request waarbij er data wordt weggeschreven naar een tekstbestand.
 ```java
-Plaats hier je code snippets voor GET request
+Vond deze 2 eerlijk gezegd niet bepaald duidelijk... maar ik denk dat dit zo de bedoeling was?
+GET REQUEST:
+        app.get("/", ctx -> {
+        try {
+            // stream, streamReader en buffer om file uit te lezen
+            FileInputStream fis = new FileInputStream("available.txt");
+            InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+            BufferedReader reader = new BufferedReader(isr);
+
+            if (file.exists()) {
+                ctx.result(reader.lines().collect(Collectors.joining()) + "\n");
+            } else {
+                throw new incorrectFilenameException("incorrect filename");
+            }
+        } catch (incorrectFilenameException err){
+            System.out.println("something went wrong");
+            throw err;
+        }
+        });
 ```
 
 Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-jou)
 
 ```java
-Plaats hier je code snippets voor POST request
+POST REQUEST:
+        app.post("/newAnimal", ctx -> {
+        String animalName = ctx.body();
+        ctx.result(animalName);
+
+        try {
+            PrintWriter writer = new PrintWriter(file, "UTF-8");
+            writer.println(animalName);
+            writer.close();
+        } catch(JsonParseException e) {
+            e.printStackTrace();
+        }
+        });
 ```
 
 Bewijs:  [linknaarhetbronbestandinjerepo]
@@ -285,7 +331,16 @@ Bewijs:  [linknaarhetbronbestandinjerepo]
 ##### 3. Een custom Exception "E" gedefiniëerd.
 
 ```java
-Plaats hier je code snippets
+public class incorrectFilenameExceptionTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void testThrowsIncorrectFileNameException() {
+        thrown.expect(incorrectFilenameException.class);
+        thrown.expectMessage("something went wrong");
+    }
+}
 ```
 
 Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-jou)
@@ -293,7 +348,11 @@ Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-j
 ##### 4. Custom Exception "E" wordt gebruikt via een `throws` constructie.
 
 ```java
-Plaats hier je code snippets
+if (file.exists()) {
+        ctx.result(reader.lines().collect(Collectors.joining()) + "\n");
+        } else {
+        throw new incorrectFilenameException("incorrect filename");
+        }
 ```
 
 Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-jou)
@@ -301,7 +360,21 @@ Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-j
 ##### 5. Custom Exception "E" wordt gebruikt via een `catch` constructie
 
 ```java
-Plaats hier je code snippets
+    try {
+        // stream, streamReader en buffer om file uit te lezen
+        FileInputStream fis = new FileInputStream("available.txt");
+        InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+        BufferedReader reader = new BufferedReader(isr);
+
+        if (file.exists()) {
+        ctx.result(reader.lines().collect(Collectors.joining()) + "\n");
+        } else {
+        throw new incorrectFilenameException("incorrect filename");
+        }
+        }catch (incorrectFilenameException err){
+        System.out.println("something went wrong");
+        throw err;
+        }
 ```
 
 Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-jou)
@@ -309,7 +382,11 @@ Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-j
 ##### 6. Minimaal 1 `intermediate operation` op een stream
 
 ```java
-Plaats hier je code snippets
+    Contains both, itermediate and terminal operation
+        List<Animal> animalsThatMakeSound = animals.stream()
+        .filter(animal -> animal.makeSound() != null)
+        .filter(animalHasName)
+        .collect(Collectors.toList());
 ```
 
 Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-jou)
@@ -317,7 +394,11 @@ Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-j
 ##### 7. Minimaal 1 `terminal operation` op een stream
 
 ```java
-Plaats hier je code snippets
+    Contains both, itermediate and terminal operation
+        List<Animal> animalsThatMakeSound = animals.stream()
+        .filter(animal -> animal.makeSound() != null)
+        .filter(animalHasName)
+        .collect(Collectors.toList());
 ```
 
 Bewijs:  [linknaarhetbronbestandinjerepo](https://gitlab.fdmci.hva.nl/repo-van-jou)

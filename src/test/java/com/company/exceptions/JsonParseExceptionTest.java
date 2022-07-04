@@ -4,13 +4,13 @@ import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
 
-public class incorrectFilenameExceptionTest {
+class JsonParseExceptionTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void testThrowsIncorrectFileNameException() {
+    public void JsonParseExceptionTest() {
         thrown.expect(incorrectFilenameException.class);
-        thrown.expectMessage("Incorrect filename");
+        thrown.expectMessage("something went wrong");
     }
 }
